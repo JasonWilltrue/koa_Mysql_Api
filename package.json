@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "koa": "^2.6.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.0",
+    "koa-mysql-session": "^0.0.2",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.9.0",
+    "md5": "^2.2.1",
+    "moment": "^2.18.1",
+    "mysql": "^2.16.0"
+  },
+  "name": "Koa2_firstApi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
