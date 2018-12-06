@@ -161,16 +161,15 @@ exports.getCheckAnswer = async ctx => {
 	await userModel
 		.findDataByName(username.trim())
 		.then(res => {
-			if (res[0]['question'] === question && res[0]['answer'] === answer)
-			{
+			if (res[0]['question'] === question && res[0]['answer'] === answer) {
 				ctx.body = {
 					status: 0,
 					data: '531ef4b4-9663-4e6d-9a20-fb56367446a5',
 				};
-			}else{
+			} else {
 				ctx.body = {
-					"status": 1,
-				    "msg": "问题答案错误"
+					status: 1,
+					msg: '问题答案错误',
 				};
 			}
 		})
@@ -188,13 +187,13 @@ exports.getCheckAnswer = async ctx => {
 exports.getRestPassword = async ctx => {
 	let request = ctx.request;
 	let req_query = request.query;
-	let { username,passwordNew,forgetToken } = req_query;
-	console.log(username,passwordNew,forgetToken );
+	let { username, passwordNew, forgetToken } = req_query;
+	console.log(username, passwordNew, forgetToken);
 	let id = 0;
 	await userModel
 		.findDataByName(username.trim())
 		.then(res => {
-		  id = res[0]['id'];
+			id = res[0]['id'];
 		})
 		.catch(err => {
 			ctx.body = {
@@ -202,36 +201,93 @@ exports.getRestPassword = async ctx => {
 				msg: '该用户不存在或该用户未设置找回密码问题',
 			};
 		});
-	
-    await userModel.forgetResetPassword([
-		md5(passwordNew),moment().format('YYYY-MM-DD HH:mm:ss'),id]).then(res=>{
-			 console.log(res);
-			 ctx.body = {
-				"status": 0,
-				"msg": "修改密码成功"
-			 }
-			 
-		}).catch(err =>{
-			console.log('错误:'+id,passwordNew);
+
+	await userModel
+		.forgetResetPassword([md5(passwordNew), moment().format('YYYY-MM-DD HH:mm:ss'), id])
+		.then(res => {
+			console.log(res);
+			ctx.body = {
+				status: 0,
+				msg: '修改密码成功',
+			};
+		})
+		.catch(err => {
+			console.log('错误:' + id, passwordNew);
 			console.log(err);
 			ctx.body = {
-				"status": 1,
-				"msg": "修改密码失败"
-			 }
-			
-		})
-
-
-
-
+				status: 1,
+				msg: '修改密码失败',
+			};
+		});
 };
 
 /**
- * 登录中状态重置密码 
+ * 登录中状态重置密码
  */
 
+/**
+ * 登录状态更新个人信息
+ */
 
+/**
+ * 获取用户列表
+ */
+exports.getUsersList = async ctx => {
+	let { pageSize, pageNum } = ctx.request.body;
+	pageSize = parseInt(pageSize) || 10;
+	pageNum = parseInt(pageNum) || 1;
 
- /**
-  * 登录状态更新个人信息
-  */
+	let reslist = [];
+	await userModel
+		.findUsersById(pageNum)
+		.then(async res => {
+			//获取总数量
+			let total = 0;
+			await userModel.findUserTotalData().then(res => {
+				total = res.length;
+				console.log('total: ' + total);
+			});
+			console.log('123');
+
+			//获取范围内的list
+			for (let i = 0, len = res.length; i < len; i++) {
+				const element = res[i];
+				data = {
+					id: element.id,
+					username: element.username,
+					password: '',
+					email: element.email,
+					phone: element.phone,
+					question: element.question,
+					answer: element.answer,
+					role: element.role,
+					createTime: element.createTime,
+					updateTime: element.updateTime,
+				};
+				reslist.push(data);
+			}
+			ctx.body = {
+				status: 0,
+				data: {
+					pageNum: pageNum,
+					pageSize: 10,
+					orderBy: null,
+					total: total,
+					pages: Math.ceil(total / 10),
+					list: reslist,
+					firstPage: 1,
+					prePage: pageNum - 1 <= 0 ? 1 : pageNum - 1,
+					nextPage: pageNum + 1 >= pages ? pages : pageNum + 1,
+					// lastPage: pages,
+					// isFirstPage: pageNum === 1 ? true : false,
+					// isLastPage: pageNum == pages ? true : false,
+				},
+			};
+		})
+		.catch(err => {
+			ctx.body = {
+				status: 1,
+				msg: err ? err : '返回数据错误！',
+			};
+		});
+};
