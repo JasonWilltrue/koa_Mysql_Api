@@ -266,6 +266,7 @@ exports.getUsersList = async ctx => {
 				};
 				reslist.push(data);
 			}
+			let pages = Math.ceil(total / 10);
 			ctx.body = {
 				status: 0,
 				data: {
@@ -273,10 +274,10 @@ exports.getUsersList = async ctx => {
 					pageSize: 10,
 					orderBy: null,
 					total: total,
-					pages: Math.ceil(total / 10),
+					pages: pages,
 					list: reslist,
 					firstPage: 1,
-					prePage: pageNum - 1 <= 0 ? 1 : pageNum - 1,
+					prePage: pageNum - 1 === 0 ? 1 : pageNum - 1,
 					nextPage: pageNum + 1 >= pages ? pages : pageNum + 1,
 					// lastPage: pages,
 					// isFirstPage: pageNum === 1 ? true : false,
