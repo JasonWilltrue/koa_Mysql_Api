@@ -8,7 +8,8 @@
 const router = require('koa-router')();
 const User = require('../controller/user');
 const Category = require('../controller/category');
-
+const Product = require('../controller/products');
+const QiNiu = require('../controller/qiniu');
 /**
  * 门户分为
  * 用户
@@ -71,5 +72,38 @@ router.post('/manage/category/add_category.do', Category.addCategory);
 router.get('/manage/category/get_category.do', Category.getCategory);
 //更新类别名
 router.get('/manage/category/set_category_name.do', Category.setCategoryName);
+
+/**
+ * 更新或增加产品
+ */
+router.get('/manage/product/save.do', Product.addProducts);
+/**
+ * 商品列表
+ */
+router.get('/manage/product/list.do', Product.getProductList);
+/**
+ *  商品详情
+ */
+router.get('/manage/product/detail.do', Product.getProductDetail);
+/**
+ *  商品搜索
+ */
+router.get('/manage/product/search.do', Product.searchProduct);
+/**
+ *  商品上下架状态
+ */
+router.get('/manage/product/set_sale_status.do', Product.setProductStatus);
+/**
+ * 获取七牛云Token
+ */
+router.get('/api/getuptoken', QiNiu.getUpToken);
+/**
+ * 图片上传
+ */
+router.get('/manage/product/upload.do', Product.addProducts);
+/**
+ * 富文本上传图片
+ */
+router.get('/manage/product/richtext_img_upload.do', Product.addProducts);
 
 module.exports = router;

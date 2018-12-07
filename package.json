@@ -8,10 +8,14 @@
     "koa-session": "^5.9.0",
     "md5": "^2.2.1",
     "moment": "^2.18.1",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "qiniu": "^7.2.1"
   },
   "name": "Koa2_firstApi",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.18.7"
+  }
 }

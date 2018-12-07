@@ -8,12 +8,12 @@ const fs = require('fs');
  */
 exports.addCategory = async ctx => {
 	let { parentId, categoryName } = ctx.request.body;
-	console.log(parentId, categoryName);
+	// console.log(parentId, categoryName);
 
 	await userModel
 		.findCategoryNameData(categoryName, parentId ? parentId : 0)
 		.then(async result => {
-			console.log(result);
+			// console.log(result);
 			if (result[0].count >= 1) {
 				ctx.body = {
 					status: 1,
@@ -34,7 +34,7 @@ exports.addCategory = async ctx => {
 			}
 		})
 		.catch(err => {
-			console.log(err);
+			// console.log(err);
 			ctx.body = {
 				status: 1,
 				msg: err,
@@ -49,12 +49,12 @@ exports.getCategory = async ctx => {
 	let request = ctx.request;
 	let req_query = request.query;
 	let categoryId = parseInt(req_query.categoryId) || 0;
-	console.log(categoryId);
+	// console.log(categoryId);
 
 	await userModel
 		.findCategoryListById(categoryId)
 		.then(res => {
-			console.log(res);
+			// console.log(res);
 			if (res.length === 0) {
 				ctx.body = {
 					status: 0,
@@ -105,11 +105,11 @@ exports.setCategoryName = async ctx => {
 	let req_query = request.query;
 	let categoryName = req_query.categoryName;
 	let id = parseInt(req_query.categoryId) || 0;
-	console.log(id, categoryName);
+	// console.log(id, categoryName);
 	await userModel
 		.updateCategoryNameById([categoryName, moment().format('YYYY-MM-DD HH:mm:ss'), id])
 		.then(res => {
-			console.log(res.changedRows);
+			// console.log(res.changedRows);
 			if (res.changedRows) {
 				ctx.body = {
 					status: 0,
