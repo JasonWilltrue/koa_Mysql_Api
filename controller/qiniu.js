@@ -3,7 +3,7 @@ let qiniu = require('qiniu');
 let util = require('util');
 let path = require('path');
 
-let multiparty = require('multiparty');
+// let multiparty = require('multiparty');
 
 let fs = require('fs');
 // 读取配置信息
@@ -11,11 +11,11 @@ let config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../config/confi
 
 let mac = new qiniu.auth.digest.Mac(config.AccessKey, config.SecretKey);
 
-let config2 = new qiniu.conf.Config();
+// let config2 = new qiniu.conf.Config();
 // 这里主要是为了用 node sdk 的 form 直传，结合 demo 中 form 方式来实现无刷新上传
-config2.zone = qiniu.zone.Zone_z2;
-let formUploader = new qiniu.form_up.FormUploader(config2);
-let putExtra = new qiniu.form_up.PutExtra();
+// config2.zone = qiniu.zone.Zone_z2;
+// let formUploader = new qiniu.form_up.FormUploader(config2);
+// let putExtra = new qiniu.form_up.PutExtra();
 let options = {
 	scope: config.Bucket,
 	deleteAfterDays: 1,
@@ -23,15 +23,15 @@ let options = {
 };
 
 let putPolicy = new qiniu.rs.PutPolicy(options);
-let bucketManager = new qiniu.rs.BucketManager(mac, null);
+// let bucketManager = new qiniu.rs.BucketManager(mac, null);
 
 exports.getUpToken = async ctx => {
 	let token = putPolicy.uploadToken(mac);
 	if (token) {
-		res.json({
+		ctx.body = {
 			uptoken: token,
 			domain: config.Domain,
-		});
+		};
 	}
 };
 

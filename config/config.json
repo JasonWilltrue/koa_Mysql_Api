@@ -1,8 +1,8 @@
 {
-	"AccessKey": "<Your Access Key>", // https://portal.qiniu.com/user/key
-	"SecretKey": "<Your Secret Key>",
-	"Bucket": "<Your Bucket Name>",
+	"AccessKey": "toY7J37YRhafqwU8wAqyDlK5jtEtgP3zW5GtmYV6",
+	"SecretKey": "ynDwvoGnVhqpEUQWdR_6RqTxkdQnAA9C5zandR5o",
+	"Bucket": "mall",
 	"Port": 9000,
 	"UptokenUrl": "uptoken",
-	"Domain": "<Your Bucket Domain>" // bucket domain eg:http://qiniu-plupload.qiniudn.com/
+	"Domain": "http://imagemall.52react.cn"
 }

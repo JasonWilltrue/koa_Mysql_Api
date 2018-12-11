@@ -51,7 +51,60 @@ exports.addProducts = async ctx => {
 /**
  * 商品列表
  */
-exports.getProductList = async ctx => {};
+exports.getProductList = async ctx => {
+	let request = ctx.request;
+	let req_query = request.query;
+	let pageNum = parseInt(req_query.pageNum) || 1;
+	let listData = [];
+	await userModel
+		.findAllProduct(pageNum)
+		.then(res => {
+			//获取总条数
+			//获取list
+			for (let i = 0; i < res.length; i++) {
+				let result = {};
+				result = {
+					id: res[i].id,
+					categoryId: res[i].categoryId,
+					name: res[i].name,
+					subtitle: res[i].subtitle,
+					mainImage: res[i].subImages,
+					status: res[i].status,
+					price: res[i].price,
+				};
+				listData.push(result);
+			}
+			console.log(listData);
+			ctx.body = {
+				status: 0,
+				data: {
+					pageNum: pageNum,
+					pageSize: 10,
+					size: 2,
+					orderBy: null,
+					startRow: 1,
+					endRow: 2,
+					total: 2,
+					pages: 1,
+					list: listData,
+					firstPage: 1,
+					prePage: 0,
+					nextPage: 0,
+					lastPage: 1,
+					isFirstPage: true,
+					isLastPage: true,
+					hasPreviousPage: false,
+					hasNextPage: false,
+				},
+			};
+		})
+		.catch(err => {
+			ctx.body = {
+				status: 10,
+				msg: '用户未登录,请登录',
+			};
+		});
+};
 
 /**
  *  商品详情
